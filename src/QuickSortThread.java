@@ -1,12 +1,16 @@
 
-public class QuickSortThread extends Thread {
+public class QuickSortThread <T extends Comparable<T>> extends Thread {
+	T[] arr ;
+	int low, high;
 	
-	public <T extends Iterable<T>> QuickSortThread(T inArr){
-		T arr = inArr;
-//	
-//		public @Override void run(){
-//			Quicksort.sort( arr);
-//	}
+	public QuickSortThread(T[] inArr, int low, int high){
+		arr = (T[]) inArr;
+		this.low = low;
+		this.high = high;
+			
+	}
 	
+	public void run(){
+		Quicksort.quickSort(arr, low, high);
 	}
 }

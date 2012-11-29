@@ -3,11 +3,28 @@ public class Quicksort {
 	public static <T extends Comparable<T>> void sort(T[] table){
 		
 		int pivot1 = partition(table, 0, table.length-1);
-		System.out.println(pivot1);
+		int pivot2 = partition(table, 0, pivot1 -1);
+		int pivot3 = partition(table, pivot1 +1, table.length-1);
 		
-		quickSort(table, 0, table.length-1);
+		
+		QuickSortThread<T>  qs1 = new QuickSortThread<T>(table, 0, (pivot2 -1));
+		QuickSortThread<T>  qs2 = new QuickSortThread<T>(table, (pivot2 +1), (pivot1 -1));
+		QuickSortThread<T>  qs3 = new QuickSortThread<T>(table, (pivot1 +1), pivot3 -1);
+		QuickSortThread<T>  qs4 = new QuickSortThread<T>(table, pivot3 +1,table.length-1);
+		
+		qs1.start();
+		qs2.start();
+		qs3.start();
+		qs4.start();
+		
+		try{
+			qs1.join();
+			qs2.join();
+			qs3.join();
+			qs4.join();
+		}catch (InterruptedException e){}
 	}
-	private static <T extends Comparable<T>> void quickSort(T[] table, int first, int last){
+	public static <T extends Comparable<T>> void quickSort(T[] table, int first, int last){
 		if (first < last){
 			int pivIndex = partition(table, first, last);
 			quickSort (table, first, pivIndex - 1);
